@@ -1,10 +1,12 @@
 package com.frm.utn.dsapimutants.services;
 
+import com.frm.utn.dsapimutants.entities.DNA;
 import com.frm.utn.dsapimutants.repositories.DNARepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 public class DNAService {
@@ -13,6 +15,19 @@ public class DNAService {
     @Autowired
     public DNAService(DNARepository dnaRepository) {
         this.dnaRepository = dnaRepository;
+    }
+
+    public boolean verifyDNA(String[] dna){
+        String dnaString = String.join("", dna);
+        Optional<DNA> dnaDB = dnaRepository.findByDNA(dnaString);
+        if(dnaDB.isPresent()) return dnaDB.get().getIsMutant();
+        boolean isMutant = isMutant(dna);
+        DNA dnaEntity = DNA.builder()
+                .dna(dna)
+                .isMutant(isMutant)
+                .build();
+        dnaRepository.save(dnaEntity);
+        return isMutant;
     }
 
     public static boolean isMutant(String[] dna){
