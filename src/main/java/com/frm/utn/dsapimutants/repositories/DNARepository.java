@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DNARepository extends JpaRepository<DNA, Long> {
+    @Query("SELECT COUNT(d) FROM DNA d WHERE d.isMutant = :isMutant")
     int countMutants(boolean isMutant);
 }
