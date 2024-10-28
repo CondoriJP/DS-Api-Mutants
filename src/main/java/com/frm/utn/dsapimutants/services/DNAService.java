@@ -18,6 +18,7 @@ public class DNAService {
     }
 
     public boolean verifyDNA(String[] dna){
+        if(dna.length<4) return false;
         Optional<Boolean> dnaDB = dnaRepository.findByDNA(dna);
         if(dnaDB.isPresent()) return dnaDB.get();
         boolean isMutant = isMutant(dna);
@@ -31,7 +32,6 @@ public class DNAService {
 
     public static boolean isMutant(String[] dna) {
         int n = dna.length;
-        if (n < 4) return false;
         String[] busqueda = {"AAAA","CCCC","GGGG","TTTT"};
         StringBuilder vertical;
         int contador = 0;
