@@ -30,9 +30,10 @@ public class DNAService {
     }
 
     public static boolean isMutant(String[] dna) {
+        int n = dna.length;
+        if (n < 4) return false;
         String[] busqueda = {"AAAA","CCCC","GGGG","TTTT"};
         StringBuilder vertical;
-        int n = dna.length;
         int contador = 0;
         for (int i = 0; i < n; i++) {
             contador += Arrays.stream(busqueda).anyMatch(dna[i]::contains) ? 1 : 0;
