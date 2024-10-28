@@ -12,6 +12,6 @@ public interface DNARepository extends JpaRepository<DNA, Long> {
     @Query("SELECT COUNT(d) FROM DNA d WHERE d.isMutant = :isMutant")
     int countMutants(boolean isMutant);
 
-   @Query("SELECT d FROM DNA d WHERE d.dna = :dna")
-   Optional<DNA> findByDNA(String dna);
+    @Query("SELECT d.isMutant FROM DNA d WHERE d.dna = :dna")
+    Optional<Boolean> findByDNA(String[] dna);
 }
