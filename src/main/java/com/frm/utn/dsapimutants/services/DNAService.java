@@ -18,9 +18,8 @@ public class DNAService {
     }
 
     public boolean verifyDNA(String[] dna){
-        String dnaString = String.join("", dna);
-        Optional<DNA> dnaDB = dnaRepository.findByDNA(dnaString);
-        if(dnaDB.isPresent()) return dnaDB.get().getIsMutant();
+        Optional<Boolean> dnaDB = dnaRepository.findByDNA(dna);
+        if(dnaDB.isPresent()) return dnaDB.get();
         boolean isMutant = isMutant(dna);
         DNA dnaEntity = DNA.builder()
                 .dna(dna)
