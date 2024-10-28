@@ -29,43 +29,28 @@ public class DNAService {
         return isMutant;
     }
 
-    public static boolean isMutant(String[] dna){
+    public static boolean isMutant(String[] dna) {
         String[] busqueda = {"AAAA","CCCC","GGGG","TTTT"};
+        StringBuilder vertical;
+        int n = dna.length;
         int contador = 0;
-        int diagComienzo = dna.length - busqueda[0].length();
-        int diagCant = 2 * diagComienzo + 1;
-        int diagIni = diagComienzo + 1;
-        int diagFin = 0;
-        int diagIndiceIni = 0;
-        int diagIndice = 0;
-        String[] diag = new String[diagCant];
-        String[] diagInv = new String[diagCant];
-        String vertical = "";
-
-        for (int i = 0; i < dna.length; i++) {
+        for (int i = 0; i < n; i++) {
             contador += Arrays.stream(busqueda).anyMatch(dna[i]::contains) ? 1 : 0;
-
-            vertical = "";
-            for (int j = 0; j < dna.length; j++) {
-                vertical += dna[j].charAt(i);
-            }
-            contador += Arrays.stream(busqueda).anyMatch(vertical::contains) ? 1 : 0;
-
-            diagIni = i < 3 ? diagIni -1 : 0;
-            diagFin = i < 4 ? (diagComienzo * 2) + 1 : diagFin -1;
-            diagIndiceIni = i < 3 ? 0 : diagIndiceIni + 1;
-            diagIndice = diagIndiceIni;
-            for (int k = diagIni; k < diagFin; k++) {
-                diag[k] += dna[i].charAt(diagIndice);
-                diagInv[k] += dna[i].charAt(5-diagIndice);
-                diagIndice++;
+            vertical = new StringBuilder();
+            for (String s : dna) vertical.append(s.charAt(i));
+            contador += Arrays.stream(busqueda).anyMatch(vertical.toString()::contains) ? 1 : 0;
+            if (i <= n - 4) {
+                StringBuilder diag = new StringBuilder();
+                StringBuilder diagInv = new StringBuilder();
+                for (int k = 0; k < n - i; k++) {
+                    diag.append(dna[i + k].charAt(k));
+                    diagInv.append(dna[i + k].charAt(n - 1 - k));
+                }
+                contador += Arrays.stream(busqueda).anyMatch(diag.toString()::contains) ? 1 : 0;
+                contador += Arrays.stream(busqueda).anyMatch(diagInv.toString()::contains) ? 1 : 0;
             }
             if (contador >=2) return true;
         }
-        for (int i = 0; i < diagCant; i++) {
-            contador += Arrays.stream(busqueda).anyMatch(diag[i]::contains) ? 1 : 0;
-            contador += Arrays.stream(busqueda).anyMatch(diagInv[i]::contains) ? 1 : 0;
-        }
-        return contador >= 2;
+        return false;
     }
 }
