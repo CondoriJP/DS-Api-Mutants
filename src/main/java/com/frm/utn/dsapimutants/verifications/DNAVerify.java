@@ -9,6 +9,7 @@ public class DNAVerify {
         for (String s : dna) {
             if (s.length() != dna.length) throw new Exception("[!] La matriz no es cuadrada");
             if (!s.matches("[ATCG]+")) throw new Exception("[!] La matriz contiene caracteres inválidos");
+            if (dna.length < 4) throw new Exception("[!] La matriz es muy pequeña");
         }
     }
 }

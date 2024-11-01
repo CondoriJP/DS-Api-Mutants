@@ -35,13 +35,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // Lombok
     compileOnly 'org.projectlombok:lombok'
-    // Spring DevTools
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     // H2 Database
     runtimeOnly 'com.h2database:h2'
     // Openapi swagger
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
-
+    // Redis Cache
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
