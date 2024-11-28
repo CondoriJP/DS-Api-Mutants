@@ -18,54 +18,54 @@ Para eso te ha pedido crear un programa con un método o función con la siguien
 ```java
 boolean isMutant(String[] dna);
 ```
-En donde recibirás como parámetro un array de Strings que representan cada fila de una tabla
+En donde recibirás como parámetro un array de Strings que representan cada fila de una tabla.
 de (NxN) con la secuencia del ADN. Las letras de los Strings solo pueden ser: (A,T,C,G), las
-cuales representa cada base nitrogenada del ADN.
+cuáles representan cada base nitrogenada del ADN.
 
-Sabrás si un humano es mutante, si encuentras más de una secuencia de cuatro letras
+Sabrás si un humano es mutante, si encuentras más de una secuencia de cuatro letras.
 iguales, de forma oblicua, horizontal o vertical.
 
 ```java
 String[] MUTANT = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
 ```
-En este caso el llamado a la función isMutant(dna) devuelve “true”.
+En este caso, el llamado a la función isMutant(dna) devuelve “true”.
 ### Instalación
-La API `DS-Api-Mutants` utiliza un base de datos en memoria `H2` y usa como cache `redis` en la rama principal `API-CACHE`, habos pueden ejecutarse en contenedores `docker`. Otra version es la API `DS-Api-Mutants` que utiliza un base de datos en memoria `H2` y no incorpora cache, la rama es `API-SIN-CACHE` y esta corriendo en Render.
+La API `DS-Api-Mutants` utiliza una base de datos en memoria `H2` y usa como caché `Redis` en la rama principal `API-CACHE`; ambos pueden ejecutarse en contenedores `Docker`. Otra versión es la API `DS-Api-Mutants`, que utiliza una base de datos en memoria `H2` y no incorpora caché; la rama es `API-SIN-CACHE` y está corriendo en Render.
 
-- Instalar la versión con cache:
-	```bash
-	git clone https://github.com/CondoriJP/DS-Api-Mutants/tree/API-CACHE
-	```
-	Armar contenedor API + Redis (Docker Compose)
-	```bash
-	docker compose up --build --no-start
-	```
-	Iniciar contenedor compuesto
-	```bash
-	docker compose up
-	```
-	Detener el contenedor
-	```bash
-	Ctl + C
-	```
+- Instalar la versión con caché:
+```bash
+git clone https://github.com/CondoriJP/DS-Api-Mutants/tree/API-CACHE
+```
+Armar contenedor API + Redis (Docker Compose)
+```bash
+docker compose up --build --no-start
+```
+Iniciar contenedor compuesto
+```bash
+docker compose up
+```
+Detener el contenedor
+```bash
+Ctrl + C
+```
 
-- Instalar la versión sin cache:
-	```bash
-	git clone https://github.com/CondoriJP/DS-Api-Mutants/tree/API-CACHE
-	```
-	Contenizar la API:
-	```bash
-	docker buildx build -t mutants:1.0 .
-	```
-	Iniciar API Mutants:
-	```bash
-	docker run -p 8080:6666 --name api-mutants mutants:1.0
-	```
+- Instalar la versión sin caché:
+```bash
+git clone https://github.com/CondoriJP/DS-Api-Mutants/tree/API-CACHE
+```
+Contenerizar la API:
+```bash
+docker buildx build -t mutants:1.0 .
+```
+Iniciar API Mutants:
+```bash
+docker run -p 8080:6666 --name api-mutants mutants:1.0
+```
 
 ### Local
-Este repositorio se encuentra el proyecto con sus dos versiones, con cache (`API-CACHE`) y sin ella (`API-SIN-CACHE`). Clonar e instalar la que se desea utilizar.
+En este repositorio se encuentra el proyecto con sus dos versiones, con caché (`API-CACHE`) y sin ella (`API-SIN-CACHE`). Clonar e instalar la que se desea utilizar.
 
-- H2 Console
+- Consola H2
 ```url
 http://localhost:8080/h2-console/
 ```
@@ -84,45 +84,62 @@ http://localhost:8080/swagger-ui/index.html
 
 - Pruebas
 
-Esta  habilitado un servicio `/mutant/` el cual recibe mediante un `POST` un JSON con el siguiente formato:
+Está habilitado un servicio `/mutant/`, el cual recibe mediante un `POST` un JSON con el siguiente formato:
 
 ```Json
 {
-    "dna": [
-      "ATGCGA",
-      "CAGTGC",
-      "TTATGT",
-      "AGAAGG",
-      "CCCCTA",
-      "TCACTG"
-    ]
-  }
+"dna": [
+"ATGCGA",
+"CAGTGC",
+"TTATGT",
+"AGAAGG",
+"CCCCTA",
+"TCACTG"
+]
+}
 ```
-Tambien esta habilitado es uso de estadisticas mediante la uri `/stats` mediante un `GET`, el cual devuelve un JSON con el siguiente formato:
+También está habilitado el uso de estadísticas mediante la URI `/stats` mediante un `GET`, el cual devuelve un JSON con el siguiente formato:
 
 ```Json
 {
-    "countMutant": integer,
-	"countHuman": integer,
-	"ratio": double
+"countMutant": integer,
+"countHuman": integer,
+"ratio": double
 }
 ```
 ### Render
 
+En Render se utiliza la rama `API-SIN-CACHE` debido a que no se puede utilizar Docker Compose.
+La URL provista de Render del deploy es `https://ds-api-mutants.onrender.com`.
+
+Se puede acceder a H2-console mediante la URL `https://ds-api-mutants.onrender.com/h2-console/`.
+
+Para API Swagger mediante la URL `https://ds-api-mutants.onrender.com/swagger-ui/index.html`.
+
+Por lo que también están los servicios:
+
+- Verificar DNAs
+
+POST: `https://ds-api-mutants.onrender.com/mutant/`
+
+- Estadísticas
+
+GET: `https://ds-api-mutants.onrender.com/stats`
+
 ### Información
 - Pruebas de carga con JMeter
 
-se realizaron pruebas de carga con JMeter, se realizaron 3 pruebas con 100, 500 y 1000 peticiones concurrentes, se obtuvieron los siguientes resultados:
-  - 100 peticiones concurrentes
-  ![Alt text](./documents/JMeter_Test_100.png?raw=true "100 test")
-  - 500 peticiones concurrentes
-  ![Alt text](./documents/JMeter_Test_500.png?raw=true "500 test")
-  - 1000 peticiones concurrentes
-  ![Alt text](./documents/JMeter_Test_1000.png?raw=true "1000 test")
+Se realizaron pruebas de carga con JMeter, se realizaron 3 pruebas con 100, 500 y 1000 peticiones concurrentes, y se obtuvieron los siguientes resultados:
+- 100 peticiones concurrentes
+![Alt text](./documents/JMeter_Test_100.png?raw=true "100 test")
+- 500 peticiones concurrentes
+![Alt text](./documents/JMeter_Test_500.png?raw=true "500 test")
+- 1000 peticiones concurrentes
+![Alt text](./documents/JMeter_Test_1000.png?raw=true "1000 test")
 
 
-- Diagrama de Secuencia
+- Diagrama de secuencia
 
-se ilustra el diagrama de secuencia para el servicio `/mutant/`
+Se ilustra el diagrama de secuencia para el servicio `/mutant/`.
 
 ![Alt text](./documents/DSecuencia_Mutants.png?raw=true "DSecuencia")
