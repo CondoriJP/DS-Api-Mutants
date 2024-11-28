@@ -55,11 +55,11 @@ La API `DS-Api-Mutants` utiliza un base de datos en memoria `H2` y usa como cach
 	```
 	Contenizar la API:
 	```bash
-	docker buildx build -t api-mutants:1.0 .
+	docker buildx build -t mutants:1.0 .
 	```
 	Iniciar API Mutants:
 	```bash
-	docker run -p 8080:8080 --name mutants api-mutants:1.0
+	docker run -p 8080:6666 --name api-mutants mutants:1.0
 	```
 
 ### Local
@@ -110,3 +110,19 @@ Tambien esta habilitado es uso de estadisticas mediante la uri `/stats` mediante
 ### Render
 
 ### Información
+- Pruebas de carga con JMeter
+
+se realizaron pruebas de carga con JMeter, se realizaron 3 pruebas con 100, 500 y 1000 peticiones concurrentes, se obtuvieron los siguientes resultados:
+  - 100 peticiones concurrentes
+  ![Alt text](./documents/JMeter_Test_100.png?raw=true "100 test")
+  - 500 peticiones concurrentes
+  ![Alt text](./documents/JMeter_Test_500.png?raw=true "500 test")
+  - 1000 peticiones concurrentes
+  ![Alt text](./documents/JMeter_Test_1000.png?raw=true "1000 test")
+
+
+- Diagrama de Secuencia
+
+se ilustra el diagrama de secuencia para el servicio `/mutant/`
+
+![Alt text](./documents/DSecuencia_Mutants.png?raw=true "DSecuencia")

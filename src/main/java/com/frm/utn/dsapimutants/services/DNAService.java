@@ -2,9 +2,7 @@ package com.frm.utn.dsapimutants.services;
 
 import com.frm.utn.dsapimutants.entities.DNA;
 import com.frm.utn.dsapimutants.repositories.DNARepository;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +18,10 @@ public class DNAService {
 		this.dnaRepository = dnaRepository;
 	}
 
-	@Cacheable(value = "dna", key = "#dna")
 	public boolean verifyDNA(String[] dna) {
 		Optional<Boolean> dnaDB = dnaRepository.findByDNA(dna);
 		if (dnaDB.isPresent()) {
-			System.out.println("[+] DB GET");
+			//System.out.println("[+] DB GET");
 			return dnaDB.get();
 		}
 		boolean isMutant = isMutant(dna);
@@ -34,7 +31,7 @@ public class DNAService {
 		.build();
 		try {
 			dnaRepository.save(dnaEntity);
-			System.out.println("[+] DB SAVE");
+			//System.out.println("[+] DB SAVE");
 		} catch (DataIntegrityViolationException e) {
 			System.out.println("[!] DB DUPLICATE");
 		}
